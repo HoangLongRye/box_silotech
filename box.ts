@@ -6,7 +6,7 @@ import { randomBytes } from "crypto";
 
 const golden_init_prob:number[]= [0.0001,
     0.00016,
-    0.00018,
+    0.00025,
     0.0004,
     0.0008,
     0.002,
@@ -15,10 +15,10 @@ const golden_init_prob:number[]= [0.0001,
     0.095,
     0.19,
     0.21,
-    0.40136]
-const plat_init_prob:number[]= [0.0005,
-    0.00064,
-    0.00076,
+    0.40129]
+const plat_init_prob:number[]= [0.00075,
+    0.001,
+    0.00065,
     0.0011,
     0.0024,
     0.004,
@@ -26,21 +26,21 @@ const plat_init_prob:number[]= [0.0005,
     0.09,
     0.12,
     0.21,
-    0.2256,
+    0.2251,
     0.295]
 
-const dia_init_prob:number[]= [0.001,
-    0.0016,
-    0.0017,
+const dia_init_prob:number[]= [0.0015,
+    0.003,
+    0.001,
     0.003,
     0.005,
     0.006,
-    0.05,
+    0.07,
     0.11,
     0.135,
     0.22,
-    0.2327,
-    0.234]
+    0.2315,
+    0.214]
 const items: string[] = ['Paranium',
     'Pythium',
     'Crypton',
@@ -158,7 +158,7 @@ function getBoxItem(n: number, address: string, unbox_blockhash: string, boxId: 
     if (box_type == 0) {
         results =  [0.0001,
             0.00016,
-            0.00018,
+            0.00025,
             0.0004,
             0.0008,
             0.002,
@@ -167,15 +167,15 @@ function getBoxItem(n: number, address: string, unbox_blockhash: string, boxId: 
             0.095,
             0.19,
             0.21,
-            0.40136];
+            0.40129];
         box_weight = g_weight;
         init_prob=golden_init_prob;
 
     }
     else if (box_type == 1) {
-        results = [0.0005,
-            0.00064,
-            0.00076,
+        results = [0.00075,
+            0.001,
+            0.00065,
             0.0011,
             0.0024,
             0.004,
@@ -183,23 +183,23 @@ function getBoxItem(n: number, address: string, unbox_blockhash: string, boxId: 
             0.09,
             0.12,
             0.21,
-            0.2256,
+            0.2251,
             0.295];
         box_weight = p_weight;
         init_prob=plat_init_prob;
     } else {
-        results = [0.001,
-            0.0016,
-            0.0017,
+        results = [0.0015,
+            0.003,
+            0.001,
             0.003,
             0.005,
             0.006,
-            0.05,
+            0.07,
             0.11,
             0.135,
             0.22,
-            0.2327,
-            0.234];
+            0.2315,
+            0.214];
         box_weight = d_weight;
         init_prob=dia_init_prob;
     }
