@@ -66,7 +66,7 @@ const seedGenerator = (address: string, unbox_blockhash: string, boxId: number, 
 }
 
 //generate box quantity n1,n2,n3
-const getQuantityBox = (address: string, unbox_blockhash: string, boxId: number, box_type: number): number[] => {
+const getQuantityBox = (address: string, buybox_blockHash: string, boxId: number, box_type: number): number[] => {
     if (box_type < 0 || box_type > 2 || typeof box_type !== 'number' || !Number.isInteger(box_type)) throw new Error(`box_type must be 0|1|2`)    
     const quantity_max = box_type === 0 ? 50 : (box_type === 1 ? 70 : 100)
     const results: number[] = []
@@ -76,7 +76,7 @@ const getQuantityBox = (address: string, unbox_blockhash: string, boxId: number,
     let n = 0
 
     while (turn >= 0 && turn <= 2) {
-        const seed = seedGenerator(address, unbox_blockhash, boxId, n, turn)
+        const seed = seedGenerator(address, buybox_blockHash, boxId, n, turn)
         if(turn==1){
             max_mod_arr.push(bound_number_arr[box_type] - results[0]); // 10 10 10
         }
@@ -225,13 +225,13 @@ function getBoxItem(n: number, address: string, unbox_blockhash: string, boxId: 
 
 
 
-function openBox(address: string, unbox_blockhash: string, boxId: number, box_type: number) {
+function openBox(address: string, unbox_blockhash: string,buybox_blockHash: string,  boxId: number, box_type: number) {
     let item_rs:number[]=new Array(12).fill(0)
     
     let s1: string, s2: string, s3: string, box: string, arr_n: number[];
     if (box_type == 0) {
         box = 'Golden'
-        arr_n = getQuantityBox(address, unbox_blockhash, boxId, box_type)
+        arr_n = getQuantityBox(address, buybox_blockHash, boxId, box_type)
 
 
         s1 = getBoxItem(arr_n[0], address,unbox_blockhash, boxId, 1, box_type);
@@ -243,7 +243,7 @@ function openBox(address: string, unbox_blockhash: string, boxId: number, box_ty
 
     } else if (box_type == 1) {
         box = 'Platinum'
-        arr_n = getQuantityBox(address, unbox_blockhash, boxId, box_type)
+        arr_n = getQuantityBox(address, buybox_blockHash, boxId, box_type)
 
 
         s1 = getBoxItem(arr_n[0], address,unbox_blockhash, boxId, 1, box_type);
@@ -254,7 +254,7 @@ function openBox(address: string, unbox_blockhash: string, boxId: number, box_ty
 
     } else {
         box = 'Diamond'
-        arr_n = getQuantityBox(address, unbox_blockhash, boxId, box_type)
+        arr_n = getQuantityBox(address, buybox_blockHash, boxId, box_type)
 
 
         s1 = getBoxItem(arr_n[0], address,unbox_blockhash, boxId, 1, box_type);
@@ -287,7 +287,8 @@ var rs_array: any[] = [];
 for (let i = 8500; i < 10000 ; i++) {
     const address = `0x${randomBytes(20).toString('hex')}`
     const unbox_blockhash = `0x${randomBytes(32).toString('hex')}`
-    rs_array.push(openBox(address, unbox_blockhash, i, 2));
+    const buybox_blockHash = `0x${randomBytes(32).toString('hex')}`
+    rs_array.push(openBox(address, unbox_blockhash,buybox_blockHash, i, 2));
 }
 
 
