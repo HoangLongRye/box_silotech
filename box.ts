@@ -59,9 +59,9 @@ const p_weight=[1, 2, 3, 4, 5, 5, 5, 5, 10, 10, 15, 5];
 const d_weight=[1, 2, 3, 4, 5, 5, 10, 10, 15, 15, 25, 5];
 
 //generate seed
-const seedGenerator = (address: string, buybox_blockHash: string, boxId: number, n: number = 0, turn: number=0): string => {
+const seedGenerator = (address: string, blockHash: string, boxId: number, n: number = 0, turn: number=0): string => {
     if (turn < 0 || turn > 2) throw new Error(`turn must be 0|1|2`)
-    const hmac = HmacSHA256(`${address}:${unbox_blockhash}:${boxId}:${turn.toString()}`, n.toString());
+    const hmac = HmacSHA256(`${address}:${blockHash}:${boxId}:${turn.toString()}`, n.toString());
     return hmac.toString(enc.Hex);
 }
 
