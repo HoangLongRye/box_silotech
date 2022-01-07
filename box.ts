@@ -12,35 +12,35 @@ const golden_init_prob:number[]= [0.0001,
     0.002,
     0.03,
     0.07,
-    0.105,
-    0.2,
-    0.24,
-    0.35136]
+    0.095,
+    0.19,
+    0.21,
+    0.40136]
 const plat_init_prob:number[]= [0.0005,
     0.00064,
-    0.00072,
-    0.0016,
+    0.00076,
+    0.0011,
     0.0024,
-    0.0035,
-    0.04,
+    0.004,
+    0.05,
     0.09,
     0.12,
-    0.20,
-    0.23,
-    0.31064]
+    0.21,
+    0.2256,
+    0.295]
 
 const dia_init_prob:number[]= [0.001,
-    0.0013,
-    0.0015,
-    0.0035,
+    0.0016,
+    0.0017,
+    0.003,
     0.005,
     0.006,
     0.05,
-    0.1,
-    0.14,
-    0.2,
-    0.23,
-    0.2617]
+    0.11,
+    0.135,
+    0.22,
+    0.2327,
+    0.234]
 const items: string[] = ['Paranium',
     'Pythium',
     'Crypton',
@@ -66,19 +66,51 @@ const seedGenerator = (address: string, blockHash: string, boxId: number, n: num
 }
 
 //generate box quantity n1,n2,n3
+// const getQuantityBox = (address: string, buybox_blockHash: string, boxId: number, box_type: number): number[] => {
+//     if (box_type < 0 || box_type > 2 || typeof box_type !== 'number' || !Number.isInteger(box_type)) throw new Error(`box_type must be 0|1|2`)    
+//     const quantity_max = box_type === 0 ? 50 : (box_type === 1 ? 70 : 100)
+//     const n1_max = box_type === 0 ? 40 : (box_type === 1 ? 60 : 90)
+//     const results: number[] = []
+//     let max_mod_arr:number[]=[];
+//     max_mod_arr.push(n1_max-1)
+//     let bound_number_arr :number[]=[45,65,95]; 
+//     let turn = 0 //turn
+//     let n = 0
+
+//     while (turn >= 0 && turn <= 2) {
+//         const seed = seedGenerator(address, buybox_blockHash, boxId, n, turn)
+//         if(turn==1){
+//             max_mod_arr.push(bound_number_arr[box_type]-1 - results[0]); // 10 10 10
+//         }
+//         else if(turn==2){
+//             max_mod_arr.push(quantity_max-results[0]-results[1]); // 10 20 30
+            
+            
+//         }
+//         const max_mod = max_mod_arr[turn];
+//         n = new Decimal(`0x` + seed).mod(max_mod).toNumber() +1;
+//         n = n === 0 ? 1 : n
+//         results.push(n)
+       
+//         turn += 1
+//     }
+//     return results
+// }
+
+
 const getQuantityBox = (address: string, buybox_blockHash: string, boxId: number, box_type: number): number[] => {
     if (box_type < 0 || box_type > 2 || typeof box_type !== 'number' || !Number.isInteger(box_type)) throw new Error(`box_type must be 0|1|2`)    
     const quantity_max = box_type === 0 ? 50 : (box_type === 1 ? 70 : 100)
     const results: number[] = []
-    let max_mod_arr:number[]=[quantity_max-20-10*box_type-1]; // 30 40 60
-    let bound_number_arr :number[]=[40,60,70]; 
+    let max_mod_arr:number[]=[];
+    max_mod_arr.push(quantity_max-2)
     let turn = 0 //turn
     let n = 0
 
     while (turn >= 0 && turn <= 2) {
         const seed = seedGenerator(address, buybox_blockHash, boxId, n, turn)
         if(turn==1){
-            max_mod_arr.push(bound_number_arr[box_type] - results[0]); // 10 10 10
+            max_mod_arr.push(quantity_max-1 - results[0]); // 10 10 10
         }
         else if(turn==2){
             max_mod_arr.push(quantity_max-results[0]-results[1]); // 10 20 30
@@ -124,7 +156,7 @@ function getBoxItem(n: number, address: string, unbox_blockhash: string, boxId: 
     
     let box_weight: number[],init_prob: number[],results: number[];
     if (box_type == 0) {
-        results = [0.0001,
+        results =  [0.0001,
             0.00016,
             0.00018,
             0.0004,
@@ -132,10 +164,10 @@ function getBoxItem(n: number, address: string, unbox_blockhash: string, boxId: 
             0.002,
             0.03,
             0.07,
-            0.105,
-            0.2,
-            0.24,
-            0.35136];
+            0.095,
+            0.19,
+            0.21,
+            0.40136];
         box_weight = g_weight;
         init_prob=golden_init_prob;
 
@@ -143,31 +175,31 @@ function getBoxItem(n: number, address: string, unbox_blockhash: string, boxId: 
     else if (box_type == 1) {
         results = [0.0005,
             0.00064,
-            0.00072,
-            0.0016,
+            0.00076,
+            0.0011,
             0.0024,
-            0.0035,
-            0.04,
+            0.004,
+            0.05,
             0.09,
             0.12,
-            0.20,
-            0.23,
-            0.31064];
+            0.21,
+            0.2256,
+            0.295];
         box_weight = p_weight;
         init_prob=plat_init_prob;
     } else {
         results = [0.001,
-            0.0013,
-            0.0015,
-            0.0035,
+            0.0016,
+            0.0017,
+            0.003,
             0.005,
             0.006,
             0.05,
-            0.1,
-            0.14,
-            0.2,
-            0.23,
-            0.2617];
+            0.11,
+            0.135,
+            0.22,
+            0.2327,
+            0.234];
         box_weight = d_weight;
         init_prob=dia_init_prob;
     }
@@ -264,26 +296,39 @@ function openBox(address: string, unbox_blockhash: string,buybox_blockHash: stri
         s3 = getBoxItem(arr_n[2], address,unbox_blockhash, boxId, 3, box_type);
 
     }
-    return {'boxId':boxId, 'box_name': box, 'n1': arr_n[0], 'n1_result': s1, 'n2': arr_n[1], 'n2_result': s2, 'n3': arr_n[2], 'n3_result': s3 };
+    return {'boxId':boxId, 'box_name': box, 'n1': arr_n[0], 'n1_rune': s1, 'n2': arr_n[1], 'n2_rune': s2, 'n3': arr_n[2], 'n3_rune': s3 };
 }
+
 
 
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const csvWriter = createCsvWriter({
-    path: 'total2.csv',
+    path: 'totalnew.csv',
     header: [
         { id: 'boxId', title: 'boxId' },
         { id: 'box_name', title: 'box_name' },
         { id: 'n1', title: 'n1' },
-        { id: 'n1_result', title: 'n1_result' },
+        { id: 'n1_rune', title: 'n1_rune' },
         { id: 'n2', title: 'n2' },
-        { id: 'n2_result', title: 'n2_result' },
+        { id: 'n2_rune', title: 'n2_rune' },
         { id: 'n3', title: 'n3' },
-        { id: 'n3_result', title: 'n3_result' }
+        { id: 'n3_rune', title: 'n3_rune' }
     ]
 });
 
 var rs_array: any[] = [];
+for (let i = 0; i < 5000 ; i++) {
+    const address = `0x${randomBytes(20).toString('hex')}`
+    const unbox_blockhash = `0x${randomBytes(32).toString('hex')}`
+    const buybox_blockHash = `0x${randomBytes(32).toString('hex')}`
+    rs_array.push(openBox(address, unbox_blockhash,buybox_blockHash, i, 0));
+}
+for (let i = 5000; i < 8500 ; i++) {
+    const address = `0x${randomBytes(20).toString('hex')}`
+    const unbox_blockhash = `0x${randomBytes(32).toString('hex')}`
+    const buybox_blockHash = `0x${randomBytes(32).toString('hex')}`
+    rs_array.push(openBox(address, unbox_blockhash,buybox_blockHash, i, 1));
+}
 for (let i = 8500; i < 10000 ; i++) {
     const address = `0x${randomBytes(20).toString('hex')}`
     const unbox_blockhash = `0x${randomBytes(32).toString('hex')}`
@@ -295,8 +340,6 @@ for (let i = 8500; i < 10000 ; i++) {
 csvWriter
     .writeRecords(rs_array)
     .then(() => console.log('The CSV file was written successfully'));
-
-
 
 
 
